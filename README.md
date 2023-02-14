@@ -11,6 +11,6 @@ look into what the dataset can answer.
 
 4 - create the javascript file - ahmed 
 
-5 - presentation - all 
+5 - presentation - all - ( ahmed + jyothi )
 
-6 - read me file - all 
+6 - read me file - all (tharu + priscila )
