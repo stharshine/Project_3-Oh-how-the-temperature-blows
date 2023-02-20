@@ -91,7 +91,7 @@ def wind():
     session.close()
     
     wind = {}
-    for row in planets:
+    for row in wind:
         wind_dict[row[0]] = ({
                                 "City": row[1],
                                 "Timestamp": row[2],
