@@ -1,91 +1,90 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Temperature Info Visualized</title>
-        <!-- Import Bootstrap, D3, Plotly-->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/cosmo/bootstrap.min.css" integrity="sha256-iMtue7kH6spfqTbfU9XGcwtBF8bgiOnVTErTuh7LJr8=" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
-        <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
-        <script src="https://d3js.org/d3.v7.min.js"></script>
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <!-- Favicon -->
-        <link rel="shortcut icon" href="../static/Images/Weather.png">
-    </head>
+
+<head>
+    <title>Wind Info Visualized</title>
+    <!-- Import Bootstrap, D3, Plotly-->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootswatch@5.1.3/dist/cosmo/bootstrap.min.css"
+        integrity="sha256-iMtue7kH6spfqTbfU9XGcwtBF8bgiOnVTErTuh7LJr8=" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+    <!-- <link rel="stylesheet" href="../static/css/style.css"> -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="../static/Images/Weather.png">
+</head>
+
 <body>
-<!-- Header & Navbar -->
-<nav class="navbar-right navbar-expand-lg navbar-dark bg-dark">
-    <div class="container">
-        <div class="container-fluid pb-2">
-            <a class="navbar-brand d-flex justify-content-center p-2" href="/">
-                <i class="bi bi-film" style="font-size: 2.8rem;"></i><h2 class="mt-3">&ensp;Wind Depiction! </h2></a>
+    <!-- Header & Navbar -->
+    <nav class="navbar-right navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <div class="container-fluid pb-2">
+                <a class="navbar-brand d-flex justify-content-center p-2" href="/">
+                    <i class="bi bi-film" style="font-size: 2.8rem;"></i>
+                    <h2 class="mt-3">&ensp;Wind Depiction! </h2>
+                </a>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <ul class="navbar-nav mx-auto">
                         <a class="nav-link" href="/"><i class="bi bi-house-door-fill"></i></a>
                         <a class="nav-link active" href="/wind">Wind</a>
-                        <a class="nav-link" href="/temparature">Temperature</a>
+                        <a class="nav-link" href="/temperature">Temperature</a>
                         <!-- <a class="nav-link" href="/line">Line Plot</a>
                         <a class="nav-link" href="/bar">Bar Plot</a> -->
                     </ul>
                 </div>
+            </div>
         </div>
-    </div>
-</nav>
-​
-​
+    </nav>
+    ​
+    ​
     <!-- Main Container section -->
-    <div class="container mt-5">
-    <div>
-        <div class="text-center">
-            <h4>Interactive Chart</h4>
-            <p>You can click and drag, and also scroll to zoom.</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 jumbotron text-center">
+                <h1>City's Temperature Dashboard</h1>
+                <p>Use the interactive charts below to explore the dataset</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="well">
+                    <h5>City:</h5>
+                    <select id="selCity" onchange="optionChanged(this.value)"></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <div id='myDiv'></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>City</th>
+                            <th>Timestamp</th>
+                            <th>Wind W-E </th>
+                            <th>Wind E-W</th>
+                            <th>Pressure</th>
+                            <th>Precipitation</th>
+                            <th>Type of Precipitation</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
         </div>
     </div>
-    <div class="form-group">
-        <label class="col-xs-3 control-label"><strong>1.</strong>&nbsp;Select what you would like to visualize:</label>
-        <div style="margin-top:2%;" class="col-xs-2">
-            <select id="selSorting" class="form-select" style="width:25%;" onchange="changeSorting(this.value)">
-                <!-- Options populated via D3 -->
-            </select>
-            <select id="selOption" class="form-select" style="width:25%;" onchange="changeOption(this.value)">
-                <!-- Options populated via D3 -->
-            </select>
-        </div>
-    </div>
-    </div>
-    <div class="container mt-auto">
-        <div id="hbar-plot"></div>
-    </div>
-    <div class="container mt-auto">
-        <div id="scatter-plot"></div>
-    </div>
-    <div class="container" style="width:800px;">
-        <label class="col-xs-3 control-label"><strong>2.</strong>&nbsp;Select the City you would like to get data:</label>
-        <div style="margin-top:4%;" class="col-xs-2">
-            <select id="selPlanet" class="form-select" style="width:25%;" onchange="changePlanet(this.value)">
-                <!-- Options populated via D3 -->
-            </select>
-        </div>
-        <h3 style="margin-top:10%;" id="planetProfileTitle"></h3>
-        <table class="table table-hover">
-            <thead>
-            <tr>
-                <th scope="col">Temperature in Kelvin </th>
-                <th scope="col" style="width:30%">Value</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th scope="row">Temperature in Celsius:</th>
-                <td id="diamTable"><!-- D3 pop --></td>
-            </tr>
-            
-            </tbody>
-        </table>
-    </div> 
-    
-    <script src="../static/js/wind-hbar.js"></script>
-    <script src="../static/js/temparature-scatter.js"></script>
-    <script src="../static/js/wind-table.js"></script>
+
+    <script src="../static/js/temp-table.js"></script>
 </body>
+
 </html>
