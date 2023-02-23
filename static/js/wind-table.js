@@ -1,4 +1,4 @@
-console.log("wind-table.js")
+//console.log("wind-table.js")
 
 var selector = d3.select("#selCity");
 
